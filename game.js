@@ -3,22 +3,28 @@ var letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p', 
 var wins = 0;
 var chances = 15;
 var guesses = [];
-
 var randomWord = words[Math.floor(Math.random() * words.length)];
-var text = "" 
-var textAll = ""
-console.log(randomWord)
+var text = "";
+var textAll = "";
 for (var i = 0; i < randomWord.length; i++) {
     text += "-";
 }
 document.querySelector("#word").innerHTML = "Current Word: " + text;
-function getAnswer() {
-    var a = document.querySelector("input").value.toLowerCase();
-    document.querySelector("#word").innerHTML = "Current Word: " + text;
-    checkAnswer(a);
+function getAnswer(a) {
+    if (letters.includes(a)) {
+        checkAnswer(a)
+    }
+    else if (a.length > 1 || !letters.includes(a)){
+        alert("You must specify just one string value!")
+    }
+    // var a = document.querySelector("input").value.toLowerCase();
+    // document.querySelector("#word").innerHTML = "Current Word: " + text;
 }
 function askAnswer(){
-    document.querySelector(".btn").addEventListener("click", getAnswer);
+    // document.querySelector(".btn").addEventListener("click", getAnswer);
+    document.onkeyup = function(event){
+    getAnswer(event.key.toLowerCase())
+    }
 }
 function checkAnswer(x) {
     if (randomWord.includes(x)) {
@@ -30,7 +36,7 @@ function checkAnswer(x) {
                 textAll += text[j];
             }
             else {
-                textAll += "-"
+                textAll += "-";
             }
         }
         text = textAll;
@@ -39,6 +45,8 @@ function checkAnswer(x) {
         if (text === randomWord) {
             wins++;
             document.querySelector("#wins").innerHTML = "Wins: " + wins;
+            restart();
+            randomWord = words[Math.floor(Math.random() * words.length)];
         }
         else {
             askAnswer();
@@ -57,18 +65,20 @@ function checkAnswer(x) {
             askAnswer();
         }
     }
-    document.querySelector("#input").value = "";
+    // document.querySelector("#input").value = "";
 }
 
 function restart() {
-    var randomWord = words[Math.floor(Math.random() * words.length)];
-    chances = 15
+    chances = 15;
     document.querySelector("#numberOfGuess").innerHTML = "Number of Guesses Remaining: " + chances;
     guesses = [];
     document.querySelector("#lettersGuessed").innerHTML = "Letters Already Guessed: " + guesses.join(" ");
-    text = ""
+    text = "";
+    for (var i = 0; i < randomWord.length; i++) {
+        text += "-";
+    }
     document.querySelector("#word").innerHTML = "Current Word: " + text;
     askAnswer()
 }
-askAnswer()
+askAnswer();
 
