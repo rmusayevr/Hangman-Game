@@ -11,19 +11,23 @@ for (var i = 0; i < randomWord.length; i++) {
 }
 document.querySelector("#word").innerHTML = "Current Word: " + text;
 function getAnswer(a) {
-    if (letters.includes(a)) {
-        checkAnswer(a)
+    if (letters.includes(a) && !guesses.includes(a)) {
+        checkAnswer(a);
     }
     else if (a.length > 1 || !letters.includes(a)){
-        alert("You must specify just one string value!")
+        alert("You must specify just one string value!");
     }
+    else if (guesses.includes(a)) {
+        alert("This letter was given. Please specify a different string value!");
+    }
+
     // var a = document.querySelector("input").value.toLowerCase();
     // document.querySelector("#word").innerHTML = "Current Word: " + text;
 }
 function askAnswer(){
     // document.querySelector(".btn").addEventListener("click", getAnswer);
     document.onkeyup = function(event){
-    getAnswer(event.key.toLowerCase())
+    getAnswer(event.key.toLowerCase());
     }
 }
 function checkAnswer(x) {
@@ -40,11 +44,12 @@ function checkAnswer(x) {
             }
         }
         text = textAll;
-        textAll = ""
+        textAll = "";
         document.querySelector("#word").innerHTML = "Current Word: " + text;
         if (text === randomWord) {
             wins++;
             document.querySelector("#wins").innerHTML = "Wins: " + wins;
+            alert("You Won! The word was " + text + "!");
             restart();
             randomWord = words[Math.floor(Math.random() * words.length)];
         }
@@ -58,7 +63,7 @@ function checkAnswer(x) {
         guesses.push(x);
         document.querySelector("#lettersGuessed").innerHTML = "Letters Already Guessed: " +  guesses.join(" ");
         if (chances == 0) {
-            alert("Your chances ran out! You Lost!")
+            alert("Your chances ran out! You Lost!");
             restart();
         }
         else {
@@ -78,7 +83,7 @@ function restart() {
         text += "-";
     }
     document.querySelector("#word").innerHTML = "Current Word: " + text;
-    askAnswer()
+    askAnswer();
 }
 askAnswer();
 
