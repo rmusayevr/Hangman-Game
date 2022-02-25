@@ -1,10 +1,12 @@
 var words = ["ant", "baboon", "badger", "bat", "bear", "beaver", "camel", "cat", "clam", "cobra", "cougar", "coyote", "crow", "deer", "dog", "donkey", "duck", "eagle", "ferret", "fox", "frog", "goat", "goose", "hawk", "lion", "lizard", "lama", "mole", "monkey", "moose", "mouse", "mule", "newt", "otter", "owl", "panda", "parrot", "pigeon", "python", "rabbit", "ram", "rat", "raven", "rhino", "salmon", "seal", "shark", "sheep", "skunk", "sloth", "snake", "spider", "stork", "swan", "tiger", "toad", "trout", "turkey", "turtle", "weasel", "whale", "wolf", "wombat", "zebra"];
+var letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p', 'q','r','s','t','u','v','w','x','y','z'];
 var wins = 0;
 var chances = 15;
 var guesses = [];
 
 var randomWord = words[Math.floor(Math.random() * words.length)];
 var text = "" 
+var textAll = ""
 console.log(randomWord)
 for (var i = 0; i < randomWord.length; i++) {
     text += "-";
@@ -22,12 +24,18 @@ function checkAnswer(x) {
     if (randomWord.includes(x)) {
         for(var j = 0; j < randomWord.length; j++){
             if(x === randomWord[j]){
-                // text = text.replace(text[j], randomWord[j])
-                text[j] = x;
-                console.log(text[j])
-                document.querySelector("#word").innerHTML = "Current Word: " + text;
+                textAll += x;
+            } 
+            else if (letters.includes(text[j])) {
+                textAll += text[j];
+            }
+            else {
+                textAll += "-"
             }
         }
+        text = textAll;
+        textAll = ""
+        document.querySelector("#word").innerHTML = "Current Word: " + text;
         if (text === randomWord) {
             wins++;
             document.querySelector("#wins").innerHTML = "Wins: " + wins;
